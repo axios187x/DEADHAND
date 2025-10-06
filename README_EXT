@@ -1,0 +1,44 @@
+# Dead Hand w/M5Fire
+
+A simple, standalone "Dead Hand" tripwire alarm for the M5Stack Fire. This project uses the device's built-in IMU (Inertial Measurement Unit) to detect movement and trigger an audible alarm. The alarm can only be disarmed by entering a pre-set code using the physical buttons. All triggered events are logged to a microSD card.
+
+## Features
+
+-   **Movement Detection:** Utilizes the M5 Fire's internal IMU to sense changes in orientation and acceleration.
+-   **Audible Alarm:** Triggers a loud, beeping alarm via the built-in speaker. The screen will display "DEAD HAND ACTIVATED!".
+-   **Code-Based Disarm:** Requires a pre-set 4-digit code to silence the alarm.
+-   **Event Logging:** Automatically logs each alarm event with a timestamp to an SD card.
+
+## Hardware Requirements
+
+-   [M5Stack Fire](https://docs.m5stack.com/en/core/fire)
+-   MicroSD card (to save log files)
+
+## Software Requirements
+
+-   [Arduino IDE](https://www.arduino.cc/en/software)
+-   [M5Stack Arduino Library](https://docs.m5stack.com/en/arduino/arduino_home)
+
+## Installation and Setup
+
+1.  **Install the M5Stack Library:** Open the Arduino IDE, go to `Sketch > Include Library > Manage Libraries...` and search for "M5Stack". Install the latest version.
+2.  **Select the Board:** Go to `Tools > Board > M5Stack Arduino` and select **M5Stack-Fire**.
+3.  **Copy the Code:** Copy the entire code from the `tripwire_alarm.ino` file into a new sketch in your Arduino IDE.
+4.  **Configure WiFi:** In the `setup()` function, replace `"Your_SSID"` and `"Your_Password"` with your local WiFi credentials. This is necessary for the device to get the correct time for event logging.
+    ```cpp
+    WiFi.begin("Your_SSID", "Your_Password");
+    ```
+5.  **Set the Alarm Code (Optional):** You can change the default 4-digit alarm code in the `const char ALARM_CODE[] = "1379";` line.
+6.  **Upload the Code:** Connect your M5 Fire to your computer via USB and upload the code to the device.
+7.  **Insert SD Card:** Once the code is uploaded, insert a formatted microSD card into the M5 Fire.
+
+## How to Use
+
+1.  After uploading the code, the device will connect to WiFi and then display a "Ready. Do not move." message.
+2.  Once the message appears, the "Dead Hand" is armed. Any significant movement will trigger the alarm.
+3.  To disarm the alarm, use the physical buttons on the M5 Fire to enter the code. The buttons are mapped as follows:
+    -   `BtnA` = 1
+    -   `BtnB` = 2
+    -   `BtnC` = 3
+4.  The alarm will automatically stop when the correct code is entered, and the device will return to the armed state.
+5.  To view the log files, you can insert the microSD card into a computer. The log file will be named `dead_hand_events.log`.
